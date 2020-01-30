@@ -22,7 +22,7 @@ public class CategoriaService {
   }
 
   public Categoria findById(Long id) {
-    return repository.findById(id).get();
+    return repository.findById(id).orElse(null);
   }
 
   public List<Categoria> findAll() {

@@ -11,10 +11,10 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 
 /**
- * Categoria
+ * Produto
  */
 @Entity
-public class Categoria implements Serializable {
+public class Produto implements Serializable {
 
   private static final long serialVersionUID = 1L;
 
@@ -22,40 +22,18 @@ public class Categoria implements Serializable {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
   private String nome;
+  private Double preco;
 
-  @ManyToMany(mappedBy = "categorias")
-  private List<Produto> produtos = new ArrayList<>();
+  @ManyToMany
+  List<Categoria> categorias = new ArrayList<>();
 
-  public Categoria() {
+  public Produto() {
   }
 
-  public Categoria(Long id, String nome) {
+  public Produto(Long id, String nome, Double preco) {
     this.id = id;
     this.nome = nome;
-  }
-
-  public Long getId() {
-    return id;
-  }
-
-  public void setId(Long id) {
-    this.id = id;
-  }
-
-  public String getNome() {
-    return nome;
-  }
-
-  public void setNome(String nome) {
-    this.nome = nome;
-  }
-
-  public List<Produto> getProdutos() {
-    return produtos;
-  }
-
-  public void setProdutos(List<Produto> produtos) {
-    this.produtos = produtos;
+    this.preco = preco;
   }
 
   @Override
@@ -74,13 +52,45 @@ public class Categoria implements Serializable {
       return false;
     if (getClass() != obj.getClass())
       return false;
-    Categoria other = (Categoria) obj;
+    Produto other = (Produto) obj;
     if (id == null) {
       if (other.id != null)
         return false;
     } else if (!id.equals(other.id))
       return false;
     return true;
+  }
+
+  public Long getId() {
+    return id;
+  }
+
+  public void setId(Long id) {
+    this.id = id;
+  }
+
+  public String getNome() {
+    return nome;
+  }
+
+  public void setNome(String nome) {
+    this.nome = nome;
+  }
+
+  public Double getPreco() {
+    return preco;
+  }
+
+  public void setPreco(Double preco) {
+    this.preco = preco;
+  }
+
+  public List<Categoria> getCategorias() {
+    return categorias;
+  }
+
+  public void setCategorias(List<Categoria> categorias) {
+    this.categorias = categorias;
   }
 
 }
