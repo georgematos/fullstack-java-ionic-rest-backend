@@ -1,4 +1,4 @@
-package com.geocode.fullstackproject.restbackend.models;
+package com.geocode.fullstackproject.restbackend.domain;
 
 import java.io.Serializable;
 import java.util.ArrayList;

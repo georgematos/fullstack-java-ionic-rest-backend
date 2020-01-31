@@ -2,9 +2,13 @@ package com.geocode.fullstackproject.restbackend.config;
 
 import java.util.Arrays;
 
-import com.geocode.fullstackproject.restbackend.models.Categoria;
-import com.geocode.fullstackproject.restbackend.models.Produto;
+import com.geocode.fullstackproject.restbackend.domain.Categoria;
+import com.geocode.fullstackproject.restbackend.domain.Cidade;
+import com.geocode.fullstackproject.restbackend.domain.Estado;
+import com.geocode.fullstackproject.restbackend.domain.Produto;
 import com.geocode.fullstackproject.restbackend.repository.CategoriaRepository;
+import com.geocode.fullstackproject.restbackend.repository.CidadeRepository;
+import com.geocode.fullstackproject.restbackend.repository.EstadoRepository;
 import com.geocode.fullstackproject.restbackend.repository.ProdutoRepository;
 
 import org.springframework.boot.CommandLineRunner;
@@ -20,10 +24,15 @@ public class TestConfig implements CommandLineRunner {
 
   private CategoriaRepository categoriaRepository;
   private ProdutoRepository produtoRepository;
+  private EstadoRepository estadoRepository;
+  private CidadeRepository cidadeRepository;
 
-  public TestConfig(CategoriaRepository categoriaRepository, ProdutoRepository produtoRepository) {
+  public TestConfig(CategoriaRepository categoriaRepository, ProdutoRepository produtoRepository,
+      EstadoRepository estadoRepository, CidadeRepository cidadeRepository) {
     this.categoriaRepository = categoriaRepository;
     this.produtoRepository = produtoRepository;
+    this.estadoRepository = estadoRepository;
+    this.cidadeRepository = cidadeRepository;
   }
 
   @Override
@@ -45,6 +54,21 @@ public class TestConfig implements CommandLineRunner {
 
     categoriaRepository.saveAll(Arrays.asList(cat1, cat2));
     produtoRepository.saveAll(Arrays.asList(p1, p2, p3));
+
+    Estado estado1 = new Estado(null, "Ceará");
+    Estado estado2 = new Estado(null, "São Paulo");
+
+    // estadoRepository.saveAll(Arrays.asList(estado1, estado2));
+
+    Cidade cidade1 = new Cidade(null, "Maracanaú", estado1);
+    Cidade cidade2 = new Cidade(null, "São Paulo", estado2);
+    Cidade cidade3 = new Cidade(null, "Campinas", estado2);
+
+    estado1.getCidades().addAll(Arrays.asList(cidade1));
+    estado2.getCidades().addAll(Arrays.asList(cidade2, cidade3));
+
+    estadoRepository.saveAll(Arrays.asList(estado1, estado2));
+    cidadeRepository.saveAll(Arrays.asList(cidade1, cidade2, cidade3));
 
   }
 

@@ -2,7 +2,7 @@ package com.geocode.fullstackproject.restbackend.resources;
 
 import java.util.List;
 
-import com.geocode.fullstackproject.restbackend.models.Categoria;
+import com.geocode.fullstackproject.restbackend.domain.Categoria;
 import com.geocode.fullstackproject.restbackend.service.CategoriaService;
 
 import org.springframework.beans.factory.annotation.Autowired;
