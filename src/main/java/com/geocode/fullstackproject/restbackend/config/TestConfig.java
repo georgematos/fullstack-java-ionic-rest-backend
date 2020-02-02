@@ -1,5 +1,7 @@
 package com.geocode.fullstackproject.restbackend.config;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 
 import com.geocode.fullstackproject.restbackend.domain.Categoria;
@@ -7,13 +9,20 @@ import com.geocode.fullstackproject.restbackend.domain.Cidade;
 import com.geocode.fullstackproject.restbackend.domain.Cliente;
 import com.geocode.fullstackproject.restbackend.domain.Endereco;
 import com.geocode.fullstackproject.restbackend.domain.Estado;
+import com.geocode.fullstackproject.restbackend.domain.Pagamento;
+import com.geocode.fullstackproject.restbackend.domain.PagamentoComBoleto;
+import com.geocode.fullstackproject.restbackend.domain.PagamentoComCartao;
+import com.geocode.fullstackproject.restbackend.domain.Pedido;
 import com.geocode.fullstackproject.restbackend.domain.Produto;
+import com.geocode.fullstackproject.restbackend.domain.enums.EstadoPagamento;
 import com.geocode.fullstackproject.restbackend.domain.enums.TipoCliente;
 import com.geocode.fullstackproject.restbackend.repository.CategoriaRepository;
 import com.geocode.fullstackproject.restbackend.repository.CidadeRepository;
 import com.geocode.fullstackproject.restbackend.repository.ClienteRepository;
 import com.geocode.fullstackproject.restbackend.repository.EnderecoRepository;
 import com.geocode.fullstackproject.restbackend.repository.EstadoRepository;
+import com.geocode.fullstackproject.restbackend.repository.PagamentoRepository;
+import com.geocode.fullstackproject.restbackend.repository.PedidoRepository;
 import com.geocode.fullstackproject.restbackend.repository.ProdutoRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,17 +43,22 @@ public class TestConfig implements CommandLineRunner {
   private CidadeRepository cidadeRepository;
   private ClienteRepository clienteRepository;
   private EnderecoRepository enderecoRepository;
+  private PagamentoRepository pagamentoRepository;
+  private PedidoRepository pedidoRepository;
 
   @Autowired
   public TestConfig(CategoriaRepository categoriaRepository, ProdutoRepository produtoRepository,
       EstadoRepository estadoRepository, CidadeRepository cidadeRepository, ClienteRepository clienteRepository,
-      EnderecoRepository enderecoRepository) {
+      EnderecoRepository enderecoRepository, PagamentoRepository pagamentoRepository,
+      PedidoRepository pedidoRepository) {
     this.categoriaRepository = categoriaRepository;
     this.produtoRepository = produtoRepository;
     this.estadoRepository = estadoRepository;
     this.cidadeRepository = cidadeRepository;
     this.clienteRepository = clienteRepository;
     this.enderecoRepository = enderecoRepository;
+    this.pagamentoRepository = pagamentoRepository;
+    this.pedidoRepository = pedidoRepository;
   }
 
   @Override
@@ -82,18 +96,40 @@ public class TestConfig implements CommandLineRunner {
     estadoRepository.saveAll(Arrays.asList(estado1, estado2));
     cidadeRepository.saveAll(Arrays.asList(cidade1, cidade2, cidade3));
 
-    Cliente cli1 = new Cliente(null, "Maria Silva", "maria@gmail.com", "30378912377", TipoCliente.PESSOAFISICA);
-    cli1.getTelefones().addAll(Arrays.asList("27368833", "88372299"));
+    Cliente cliente1 = new Cliente(null, "Maria Silva", "maria@gmail.com", "30378912377", TipoCliente.PESSOAFISICA);
+    cliente1.getTelefones().addAll(Arrays.asList("27368833", "88372299"));
 
-    // clienteRepository.saveAll(Arrays.asList(cli1));
+    // clienteRepository.saveAll(Arrays.asList(cliente1));
 
-    Endereco e1 = new Endereco(null, "Rua Flores", "300", "Apto 203", "Jardim", "38220834", cidade1, cli1);
-    Endereco e2 = new Endereco(null, "Avenida Matos", "105", "Sala 800", "Centro", "38777012", cidade2, cli1);
+    Endereco endereco1 = new Endereco(null, "Rua Flores", "300", "Apto 203", "Jardim", "38220834", cidade1, cliente1);
+    Endereco endereco2 = new Endereco(null, "Avenida Matos", "105", "Sala 800", "Centro", "38777012", cidade2,
+        cliente1);
 
-    cli1.getEnderecos().addAll(Arrays.asList(e1, e2));
+    cliente1.getEnderecos().addAll(Arrays.asList(endereco1, endereco2));
 
-    clienteRepository.saveAll(Arrays.asList(cli1));
-    enderecoRepository.saveAll(Arrays.asList(e1, e2));
+    clienteRepository.saveAll(Arrays.asList(cliente1));
+    enderecoRepository.saveAll(Arrays.asList(endereco1, endereco2));
+
+    // DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy
+    // HH:mm");
+    // LocalDateTime date = formatter.parse("30/09/2017 10:32");
+    LocalDateTime datePedido1 = LocalDateTime.of(2017, 9, 30, 10, 32);
+    LocalDateTime datePedido2 = LocalDateTime.of(2017, 10, 10, 19, 35);
+
+    Pedido pedido1 = new Pedido(null, datePedido1, endereco1, cliente1);
+    Pedido pedido2 = new Pedido(null, datePedido2, endereco2, cliente1);
+
+    Pagamento pagto1 = new PagamentoComCartao(null, EstadoPagamento.QUITADO, pedido1, 6);
+    pedido1.setPagamento(pagto1);
+
+    LocalDate dateVencimento = LocalDate.of(2017, 10, 20);
+    Pagamento pagto2 = new PagamentoComBoleto(null, EstadoPagamento.PENDENTE, pedido2, dateVencimento, null);
+    pedido2.setPagamento(pagto2);
+
+    cliente1.getPedidos().addAll(Arrays.asList(pedido1, pedido2));
+
+    pedidoRepository.saveAll(Arrays.asList(pedido1, pedido2));
+    pagamentoRepository.saveAll(Arrays.asList(pagto1, pagto2));
 
   }
 
