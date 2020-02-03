@@ -9,6 +9,7 @@ import com.geocode.fullstackproject.restbackend.domain.Cidade;
 import com.geocode.fullstackproject.restbackend.domain.Cliente;
 import com.geocode.fullstackproject.restbackend.domain.Endereco;
 import com.geocode.fullstackproject.restbackend.domain.Estado;
+import com.geocode.fullstackproject.restbackend.domain.ItemPedido;
 import com.geocode.fullstackproject.restbackend.domain.Pagamento;
 import com.geocode.fullstackproject.restbackend.domain.PagamentoComBoleto;
 import com.geocode.fullstackproject.restbackend.domain.PagamentoComCartao;
@@ -21,6 +22,7 @@ import com.geocode.fullstackproject.restbackend.repository.CidadeRepository;
 import com.geocode.fullstackproject.restbackend.repository.ClienteRepository;
 import com.geocode.fullstackproject.restbackend.repository.EnderecoRepository;
 import com.geocode.fullstackproject.restbackend.repository.EstadoRepository;
+import com.geocode.fullstackproject.restbackend.repository.ItemPedidoRepository;
 import com.geocode.fullstackproject.restbackend.repository.PagamentoRepository;
 import com.geocode.fullstackproject.restbackend.repository.PedidoRepository;
 import com.geocode.fullstackproject.restbackend.repository.ProdutoRepository;
@@ -45,12 +47,13 @@ public class TestConfig implements CommandLineRunner {
   private EnderecoRepository enderecoRepository;
   private PagamentoRepository pagamentoRepository;
   private PedidoRepository pedidoRepository;
+  private ItemPedidoRepository itemPedidoRepository;
 
   @Autowired
   public TestConfig(CategoriaRepository categoriaRepository, ProdutoRepository produtoRepository,
       EstadoRepository estadoRepository, CidadeRepository cidadeRepository, ClienteRepository clienteRepository,
-      EnderecoRepository enderecoRepository, PagamentoRepository pagamentoRepository,
-      PedidoRepository pedidoRepository) {
+      EnderecoRepository enderecoRepository, PagamentoRepository pagamentoRepository, PedidoRepository pedidoRepository,
+      ItemPedidoRepository itemPedidoRepository) {
     this.categoriaRepository = categoriaRepository;
     this.produtoRepository = produtoRepository;
     this.estadoRepository = estadoRepository;
@@ -59,6 +62,7 @@ public class TestConfig implements CommandLineRunner {
     this.enderecoRepository = enderecoRepository;
     this.pagamentoRepository = pagamentoRepository;
     this.pedidoRepository = pedidoRepository;
+    this.itemPedidoRepository = itemPedidoRepository;
   }
 
   @Override
@@ -130,6 +134,19 @@ public class TestConfig implements CommandLineRunner {
 
     pedidoRepository.saveAll(Arrays.asList(pedido1, pedido2));
     pagamentoRepository.saveAll(Arrays.asList(pagto1, pagto2));
+
+    ItemPedido itemPedido1 = new ItemPedido(pedido1, p1, 0.0, 1, 2000.0);
+    ItemPedido itemPedido2 = new ItemPedido(pedido1, p3, 0.0, 2, 80.0);
+    ItemPedido itemPedido3 = new ItemPedido(pedido2, p2, 100.0, 1, 800.0);
+
+    pedido1.getItems().addAll(Arrays.asList(itemPedido1, itemPedido2));
+    pedido2.getItems().addAll(Arrays.asList(itemPedido3));
+
+    p1.getItens().addAll(Arrays.asList(itemPedido1));
+    p2.getItens().addAll(Arrays.asList(itemPedido3));
+    p3.getItens().addAll(Arrays.asList(itemPedido2));
+
+    itemPedidoRepository.saveAll(Arrays.asList(itemPedido1, itemPedido2, itemPedido3));
 
   }
 

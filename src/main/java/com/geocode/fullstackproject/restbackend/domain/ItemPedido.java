@@ -4,7 +4,6 @@ import java.io.Serializable;
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.Table;
 
 import com.geocode.fullstackproject.restbackend.domain.pk.ItemPedidoPK;
 
@@ -12,7 +11,6 @@ import com.geocode.fullstackproject.restbackend.domain.pk.ItemPedidoPK;
  * ItemPedido
  */
 @Entity
-@Table(name = "tb_item_pedido")
 public class ItemPedido implements Serializable {
 
   private static final long serialVersionUID = 1L;
