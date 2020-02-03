@@ -17,7 +17,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 /**
  * Pedido
@@ -37,10 +38,11 @@ public class Pedido implements Serializable {
   @JoinColumn(name = "endereco_de_entrega_id")
   private Endereco enderecoDeEntrega;
 
+  @JsonManagedReference
   @OneToOne(cascade = CascadeType.ALL, mappedBy = "pedido")
   private Pagamento pagamento;
 
-  @JsonBackReference
+  @JsonManagedReference
   @ManyToOne
   @JoinColumn(name = "cliente_id")
   private Cliente cliente;
@@ -58,6 +60,7 @@ public class Pedido implements Serializable {
     this.cliente = cliente;
   }
 
+  @JsonIgnore
   public List<Produto> getProdutos() {
     List<Produto> produtos = new ArrayList<>();
     items.stream().forEach(item -> produtos.add(item.getProduto()));
