@@ -15,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.geocode.fullstackproject.restbackend.domain.enums.TipoCliente;
 
 /**
@@ -41,6 +42,7 @@ public class Cliente implements Serializable {
   private Set<String> telefones = new HashSet<>();
 
   @OneToMany(mappedBy = "cliente")
+  @JsonManagedReference
   private List<Endereco> enderecos = new ArrayList<>();
 
   @JsonIgnore
@@ -92,10 +94,6 @@ public class Cliente implements Serializable {
 
   public TipoCliente getTipo() {
     return TipoCliente.toEnum(tipo);
-  }
-
-  public void setTipo(Integer tipo) {
-    this.tipo = tipo;
   }
 
   public void setTipo(TipoCliente tipo) {

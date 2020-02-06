@@ -31,4 +31,8 @@ public class ClienteService {
     return repository.findAll();
   }
 
+  public Cliente save(Cliente cliente) {
+    return repository.save(cliente);
+  }
+
 }

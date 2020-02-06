@@ -1,5 +1,6 @@
 package com.geocode.fullstackproject.restbackend.resources;
 
+import java.net.URI;
 import java.util.List;
 
 import com.geocode.fullstackproject.restbackend.domain.Categoria;
@@ -9,8 +10,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import org.springframework.web.bind.annotation.PutMapping;
 
 /**
  * CategoriaResource
@@ -19,22 +24,36 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(value = "/categorias")
 public class CategoriaResource {
 
-  private CategoriaService categoriaService;
+  private CategoriaService service;
 
   @Autowired
   public CategoriaResource(CategoriaService categoriaService) {
-    this.categoriaService = categoriaService;
+    this.service = categoriaService;
   }
 
   @GetMapping
   public ResponseEntity<List<Categoria>> findAll() {
-    List<Categoria> categorias = categoriaService.findAll();
+    List<Categoria> categorias = service.findAll();
     return ResponseEntity.ok().body(categorias);
   }
 
   @GetMapping(value = "/{id}")
   public ResponseEntity<Categoria> find(@PathVariable Long id) {
-    Categoria categoria = categoriaService.findById(id);
+    Categoria categoria = service.findById(id);
+    return ResponseEntity.ok().body(categoria);
+  }
+
+  @PostMapping
+  public ResponseEntity<Void> save(@RequestBody Categoria entity) {
+    Categoria categoriaSalva = service.save(entity);
+    URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(categoriaSalva.getId())
+        .toUri();
+    return ResponseEntity.created(uri).build();
+  }
+
+  @PutMapping(value = "/{id}")
+  public ResponseEntity<Categoria> update(@PathVariable Long id, @RequestBody Categoria entityWithNewData) {
+    Categoria categoria = service.update(id, entityWithNewData);
     return ResponseEntity.ok().body(categoria);
   }
 
