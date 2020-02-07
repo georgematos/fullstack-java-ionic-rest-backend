@@ -1,9 +1,11 @@
 package com.geocode.fullstackproject.restbackend.resources;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.geocode.fullstackproject.restbackend.domain.Categoria;
+import com.geocode.fullstackproject.restbackend.domain.dto.CategoriaDTO;
 import com.geocode.fullstackproject.restbackend.service.CategoriaService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,9 +35,10 @@ public class CategoriaResource {
   }
 
   @GetMapping
-  public ResponseEntity<List<Categoria>> findAll() {
-    List<Categoria> categorias = service.findAll();
-    return ResponseEntity.ok().body(categorias);
+  public ResponseEntity<List<CategoriaDTO>> findAll() {
+    List<CategoriaDTO> dtos = new ArrayList<>();
+    service.findAll().forEach(c -> dtos.add(new CategoriaDTO(c)));
+    return ResponseEntity.ok().body(dtos);
   }
 
   @GetMapping(value = "/{id}")

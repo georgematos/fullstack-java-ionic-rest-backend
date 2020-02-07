@@ -14,7 +14,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 /**
  * Produto
@@ -32,7 +31,6 @@ public class Produto implements Serializable {
 
   @JsonIgnore
   @ManyToMany
-  @JsonManagedReference
   private List<Categoria> categorias = new ArrayList<>();
 
   @JsonIgnore
