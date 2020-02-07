@@ -4,6 +4,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.geocode.fullstackproject.restbackend.service.exceptions.EntidadeNaoEncontradaException;
 
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -16,10 +18,27 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class ResourceExceptionHandler {
 
   @ExceptionHandler(EntidadeNaoEncontradaException.class)
-  public ResponseEntity<StandardError> EntidadeNaoEncontrada(EntidadeNaoEncontradaException e, HttpServletRequest request) {
+  public ResponseEntity<StandardError> entidadeNaoEncontrada(EntidadeNaoEncontradaException e,
+      HttpServletRequest request) {
     HttpStatus status = HttpStatus.NOT_FOUND;
     StandardError stdError = new StandardError(status.value(), e.getMessage(), System.currentTimeMillis());
     return ResponseEntity.status(status).body(stdError);
-  } 
-  
+  }
+
+  @ExceptionHandler(DataIntegrityViolationException.class)
+  public ResponseEntity<StandardError> dataIntegrityViolation(DataIntegrityViolationException e,
+      HttpServletRequest request) {
+    HttpStatus status = HttpStatus.BAD_REQUEST;
+    StandardError stdError = new StandardError(status.value(),
+        "Não é possível excluir a categoria pois há produtos vinculados.", System.currentTimeMillis());
+    return ResponseEntity.status(status).body(stdError);
+  }
+
+  @ExceptionHandler(EmptyResultDataAccessException.class)
+  public ResponseEntity<StandardError> emptyResult(EmptyResultDataAccessException e, HttpServletRequest request) {
+    HttpStatus status = HttpStatus.NOT_FOUND;
+    StandardError stdError = new StandardError(status.value(), e.getMessage(), System.currentTimeMillis());
+    return ResponseEntity.status(status).body(stdError);
+  }
+
 }

@@ -6,7 +6,6 @@ import com.geocode.fullstackproject.restbackend.domain.Categoria;
 import com.geocode.fullstackproject.restbackend.repository.CategoriaRepository;
 import com.geocode.fullstackproject.restbackend.service.exceptions.EntidadeNaoEncontradaException;
 
-import org.aspectj.weaver.NewConstructorTypeMunger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -42,6 +41,13 @@ public class CategoriaService {
     return repository.save(categoria);
   }
 
+  public void delete(Long id) {
+    repository.deleteById(id);
+  }
+
+  /**
+   * Métodos auxiliares
+   */
   private void fillCategoriaToUpdate(Categoria categoria, Categoria catNewData) {
     categoria.setNome(catNewData.getNome());
   }
