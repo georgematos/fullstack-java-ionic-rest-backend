@@ -1,8 +1,8 @@
 package com.geocode.fullstackproject.restbackend.resources;
 
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.geocode.fullstackproject.restbackend.domain.Categoria;
 import com.geocode.fullstackproject.restbackend.domain.dto.CategoriaDTO;
@@ -36,8 +36,7 @@ public class CategoriaResource {
 
   @GetMapping
   public ResponseEntity<List<CategoriaDTO>> findAll() {
-    List<CategoriaDTO> dtos = new ArrayList<>();
-    service.findAll().forEach(c -> dtos.add(new CategoriaDTO(c)));
+    List<CategoriaDTO> dtos = service.findAll().stream().map(c -> new CategoriaDTO(c)).collect(Collectors.toList());
     return ResponseEntity.ok().body(dtos);
   }
 
