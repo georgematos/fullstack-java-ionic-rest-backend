@@ -3,6 +3,7 @@ package com.geocode.fullstackproject.restbackend.service;
 import java.util.List;
 
 import com.geocode.fullstackproject.restbackend.domain.Categoria;
+import com.geocode.fullstackproject.restbackend.domain.dto.CategoriaDTO;
 import com.geocode.fullstackproject.restbackend.repository.CategoriaRepository;
 import com.geocode.fullstackproject.restbackend.service.exceptions.EntidadeNaoEncontradaException;
 
@@ -48,7 +49,7 @@ public class CategoriaService {
     repository.deleteById(id);
   }
 
-  public Page<Categoria> findPage(Integer page, Integer linesPerPages, String orderBy, String direction) {
+  public Page<Categoria> findPage(Integer page, Integer linesPerPages, String direction, String orderBy) {
     PageRequest pageRequest = PageRequest.of(page, linesPerPages, Direction.valueOf(direction), orderBy);
     return repository.findAll(pageRequest);
   }
@@ -58,6 +59,10 @@ public class CategoriaService {
    */
   private void fillCategoriaToUpdate(Categoria categoria, Categoria catNewData) {
     categoria.setNome(catNewData.getNome());
+  }
+
+  public Categoria fromDTO(CategoriaDTO dto) {
+    return new Categoria(dto.getId(), dto.getNome());
   }
 
 }

@@ -4,6 +4,8 @@ import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.validation.Valid;
+
 import com.geocode.fullstackproject.restbackend.domain.Categoria;
 import com.geocode.fullstackproject.restbackend.domain.dto.CategoriaDTO;
 import com.geocode.fullstackproject.restbackend.service.CategoriaService;
@@ -49,16 +51,18 @@ public class CategoriaResource {
   }
 
   @PostMapping
-  public ResponseEntity<Void> save(@RequestBody Categoria entity) {
-    Categoria categoriaSalva = service.save(entity);
-    URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(categoriaSalva.getId())
+  public ResponseEntity<Categoria> save(@Valid @RequestBody CategoriaDTO entityDTO) {
+    Categoria categoria = service.fromDTO(entityDTO);
+    categoria = service.save(categoria);
+    URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(categoria.getId())
         .toUri();
-    return ResponseEntity.created(uri).build();
+    return ResponseEntity.created(uri).body(categoria);
   }
 
   @PutMapping(value = "/{id}")
-  public ResponseEntity<Categoria> update(@PathVariable Long id, @RequestBody Categoria entityWithNewData) {
-    Categoria categoria = service.update(id, entityWithNewData);
+  public ResponseEntity<Categoria> update(@PathVariable Long id, @Valid @RequestBody CategoriaDTO entityWithNewDataDTO) {
+    Categoria categoria = service.fromDTO(entityWithNewDataDTO);
+    categoria = service.update(id, categoria);
     return ResponseEntity.ok().body(categoria);
   }
 
@@ -72,9 +76,9 @@ public class CategoriaResource {
   public ResponseEntity<Page<CategoriaDTO>> findPage(
     @RequestParam(value="page", defaultValue = "0") Integer page, 
     @RequestParam(value="linesPerPage", defaultValue = "24") Integer linesPerPages,
-    @RequestParam(value="orderBy", defaultValue = "nome") String orderBy, 
-    @RequestParam(value="direction", defaultValue = "ASC") String direction) {
-      Page<Categoria> categorias = service.findPage(page, linesPerPages, orderBy, direction);
+    @RequestParam(value="direction", defaultValue = "ASC") String direction,
+      @RequestParam(value="orderBy", defaultValue = "nome") String orderBy) { 
+      Page<Categoria> categorias = service.findPage(page, linesPerPages, direction, orderBy);
       Page<CategoriaDTO> PageDTOs = categorias.map(c -> new CategoriaDTO(c));
       return ResponseEntity.ok().body(PageDTOs);
     }
