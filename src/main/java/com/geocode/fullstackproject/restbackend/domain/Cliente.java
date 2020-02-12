@@ -32,7 +32,7 @@ public class Cliente implements Serializable {
 
   private String nome;
   private String email;
-  private String cpfouCnpj;
+  private String cpfOuCnpj;
   private Integer tipo;
 
   // Quando uma associação for muito simples, com apenas 1 campo, pode-se fazer
@@ -56,7 +56,7 @@ public class Cliente implements Serializable {
     this.id = id;
     this.nome = nome;
     this.email = email;
-    this.cpfouCnpj = cpfouCnpj;
+    this.cpfOuCnpj = cpfouCnpj;
     this.tipo = tipo.getCod();
   }
 
@@ -84,12 +84,12 @@ public class Cliente implements Serializable {
     this.email = email;
   }
 
-  public String getCpfouCnpj() {
-    return cpfouCnpj;
+  public String getCpfOuCnpj() {
+    return cpfOuCnpj;
   }
 
-  public void setCpfouCnpj(String cpfouCnpj) {
-    this.cpfouCnpj = cpfouCnpj;
+  public void setCpfOuCnpj(String cpfouCnpj) {
+    this.cpfOuCnpj = cpfouCnpj;
   }
 
   public TipoCliente getTipo() {

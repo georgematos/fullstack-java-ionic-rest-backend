@@ -35,7 +35,7 @@ public class ClienteDTO implements Serializable {
     id = cliente.getId();
     nome = cliente.getNome();
     email = cliente.getEmail();
-    cpfouCnpj = cliente.getCpfouCnpj();
+    cpfouCnpj = cliente.getCpfOuCnpj();
     tipo = cliente.getTipo().getCod();
   }
 

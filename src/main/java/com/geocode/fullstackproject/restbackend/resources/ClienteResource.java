@@ -7,6 +7,7 @@ import javax.validation.Valid;
 
 import com.geocode.fullstackproject.restbackend.domain.Cliente;
 import com.geocode.fullstackproject.restbackend.domain.dto.ClienteDTO;
+import com.geocode.fullstackproject.restbackend.domain.dto.ClienteNewDTO;
 import com.geocode.fullstackproject.restbackend.service.ClienteService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,11 +71,11 @@ public class ClienteResource {
   }
 
   @PostMapping
-  public ResponseEntity<Cliente> save(@RequestBody Cliente cliente) {
-    Cliente clienteSalvo = service.save(cliente);
-    URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(clienteSalvo.getId())
-        .toUri();
-    return ResponseEntity.created(uri).body(clienteSalvo);
+  public ResponseEntity<Cliente> save(@RequestBody ClienteNewDTO clienteNewDTO) {
+    Cliente entity = service.fromDTO(clienteNewDTO);
+    entity = service.insert(clienteNewDTO);
+    URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(entity.getId()).toUri();
+    return ResponseEntity.created(uri).body(entity);
   }
 
 }

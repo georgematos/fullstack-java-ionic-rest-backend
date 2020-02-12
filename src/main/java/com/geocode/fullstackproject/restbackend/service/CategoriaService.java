@@ -35,7 +35,7 @@ public class CategoriaService {
     return repository.findAll();
   }
 
-  public Categoria save(Categoria categoria) {
+  public Categoria insert(Categoria categoria) {
     return repository.save(categoria);
   }
 
