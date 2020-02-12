@@ -32,7 +32,8 @@ public class ResourceExceptionHandler {
       HttpServletRequest request) {
     HttpStatus status = HttpStatus.BAD_REQUEST;
     StandardError stdError = new StandardError(status.value(),
-        "Não é possível excluir a categoria pois há produtos vinculados.", System.currentTimeMillis());
+        "Não é possível excluir a entidade pois há dados de outra(s) tabela(s) vinculados.",
+        System.currentTimeMillis());
     return ResponseEntity.status(status).body(stdError);
   }
 

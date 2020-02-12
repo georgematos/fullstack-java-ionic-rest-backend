@@ -41,7 +41,7 @@ public class CategoriaService {
 
   public Categoria update(Long id, Categoria catNewData) {
     Categoria categoria = findById(id);
-    fillCategoriaToUpdate(categoria, catNewData);
+    updateData(categoria, catNewData);
     return repository.save(categoria);
   }
 
@@ -57,7 +57,7 @@ public class CategoriaService {
   /**
    * Métodos auxiliares
    */
-  private void fillCategoriaToUpdate(Categoria categoria, Categoria catNewData) {
+  private void updateData(Categoria categoria, Categoria catNewData) {
     categoria.setNome(catNewData.getNome());
   }
 
