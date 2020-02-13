@@ -8,7 +8,9 @@ import com.geocode.fullstackproject.restbackend.domain.Endereco;
 import com.geocode.fullstackproject.restbackend.domain.dto.ClienteDTO;
 import com.geocode.fullstackproject.restbackend.domain.dto.ClienteNewDTO;
 import com.geocode.fullstackproject.restbackend.domain.enums.TipoCliente;
+import com.geocode.fullstackproject.restbackend.repository.CidadeRepository;
 import com.geocode.fullstackproject.restbackend.repository.ClienteRepository;
+import com.geocode.fullstackproject.restbackend.repository.EnderecoRepository;
 import com.geocode.fullstackproject.restbackend.service.exceptions.EntidadeNaoEncontradaException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,10 +27,15 @@ import org.springframework.transaction.annotation.Transactional;
 public class ClienteService {
 
   final private ClienteRepository repository;
+  final private EnderecoRepository enderecoRepository;
+  final private CidadeRepository cidadeRepository;
 
   @Autowired
-  public ClienteService(ClienteRepository repository) {
+  public ClienteService(ClienteRepository repository, EnderecoRepository enderecoRepository,
+      CidadeRepository cidadeRepository) {
     this.repository = repository;
+    this.enderecoRepository = enderecoRepository;
+    this.cidadeRepository = cidadeRepository;
   }
 
   public Cliente findById(Long id) {
@@ -47,6 +54,7 @@ public class ClienteService {
   @Transactional
   public Cliente insert(ClienteNewDTO cliente) {
     Cliente entity = fromDTO(cliente);
+    enderecoRepository.saveAll(entity.getEnderecos());
     return repository.save(entity);
   }
 
@@ -79,7 +87,7 @@ public class ClienteService {
   public Cliente fromDTO(ClienteNewDTO dto) {
     Cliente cliente = new Cliente(null, dto.getNome(), dto.getEmail(), dto.getCpfOuCnpj(),
         TipoCliente.toEnum(dto.getTipo()));
-    Cidade cidade = new Cidade(dto.getCidadeId(), null, null);
+    Cidade cidade = cidadeRepository.findById(dto.getCidadeId()).get();
     Endereco end = new Endereco(null, dto.getLogradouro(), dto.getNumero(), dto.getComplemento(), dto.getBairro(),
         dto.getCep(), cidade, cliente);
     cliente.getEnderecos().add(end);
