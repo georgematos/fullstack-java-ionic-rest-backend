@@ -13,10 +13,14 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.geocode.fullstackproject.restbackend.domain.enums.TipoCliente;
+
+import org.hibernate.validator.constraints.Length;
 
 /**
  * Cliente
@@ -30,7 +34,12 @@ public class Cliente implements Serializable {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
+  @NotEmpty(message = "Preenchimento obrigatório")
+  @Length(min = 5, max = 80, message = "Tamnho deve ser entre 5 e 80 cacacteres")
   private String nome;
+
+  @Email(message = "Email inválido")
+  @NotEmpty(message = "Preenchimento obrigatório")
   private String email;
   private String cpfOuCnpj;
   private Integer tipo;

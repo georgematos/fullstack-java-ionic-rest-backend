@@ -1,6 +1,10 @@
 package com.geocode.fullstackproject.restbackend.resources.exceptions;
 
+import java.util.Set;
+
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
 
 import com.geocode.fullstackproject.restbackend.service.exceptions.EntidadeNaoEncontradaException;
 
@@ -56,4 +60,14 @@ public class ResourceExceptionHandler {
     return ResponseEntity.status(status).body(validationError);
   }
 
+  @ExceptionHandler(ConstraintViolationException.class)
+  public ResponseEntity<ValidationError> ValidationError(ConstraintViolationException e, HttpServletRequest request) {
+    HttpStatus status = HttpStatus.NOT_FOUND;
+    ValidationError validationError = new ValidationError(status.value(), "Erro de validação",
+        System.currentTimeMillis());
+    for (ConstraintViolation<?> fe : e.getConstraintViolations()) {
+      validationError.setError(fe.getPropertyPath().toString(), fe.getMessage());
+    }
+    return ResponseEntity.status(status).body(validationError);
+  }
 }
