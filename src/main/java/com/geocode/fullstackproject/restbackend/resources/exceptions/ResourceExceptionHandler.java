@@ -1,7 +1,5 @@
 package com.geocode.fullstackproject.restbackend.resources.exceptions;
 
-import java.util.Set;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
