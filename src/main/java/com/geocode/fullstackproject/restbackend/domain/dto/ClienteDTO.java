@@ -3,10 +3,12 @@ package com.geocode.fullstackproject.restbackend.domain.dto;
 import java.io.Serializable;
 
 import com.geocode.fullstackproject.restbackend.domain.Cliente;
+import com.geocode.fullstackproject.restbackend.service.validations.cliente.ClienteUpdate;
 
 /**
  * ClienteDTO
  */
+@ClienteUpdate
 public class ClienteDTO implements Serializable {
 
   private static final long serialVersionUID = 1L;
@@ -14,8 +16,6 @@ public class ClienteDTO implements Serializable {
   private Long id;
   private String nome;
   private String email;
-  private String cpfouCnpj;
-  private Integer tipo;
 
   public ClienteDTO() {
   }
@@ -24,8 +24,6 @@ public class ClienteDTO implements Serializable {
     id = cliente.getId();
     nome = cliente.getNome();
     email = cliente.getEmail();
-    cpfouCnpj = cliente.getCpfOuCnpj();
-    tipo = cliente.getTipo().getCod();
   }
 
   public Long getId() {
@@ -50,22 +48,6 @@ public class ClienteDTO implements Serializable {
 
   public void setEmail(String email) {
     this.email = email;
-  }
-
-  public String getCpfouCnpj() {
-    return cpfouCnpj;
-  }
-
-  public void setCpfouCnpj(String cpfouCnpj) {
-    this.cpfouCnpj = cpfouCnpj;
-  }
-
-  public Integer getTipo() {
-    return tipo;
-  }
-
-  public void setTipo(Integer tipo) {
-    this.tipo = tipo;
   }
 
 }

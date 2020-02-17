@@ -75,13 +75,10 @@ public class ClienteService {
   private void updateData(Cliente cliente, Cliente cliNewData) {
     cliente.setNome(cliNewData.getNome());
     cliente.setEmail(cliNewData.getEmail());
-    cliente.setCpfOuCnpj(cliNewData.getCpfOuCnpj());
-    cliente.setTipo(cliNewData.getTipo());
   }
 
   public Cliente fromDTO(ClienteDTO dto) {
-    return new Cliente(dto.getId(), dto.getNome(), dto.getEmail(), dto.getCpfouCnpj(),
-        TipoCliente.toEnum(dto.getTipo()));
+    return new Cliente(dto.getId(), dto.getNome(), dto.getEmail());
   }
 
   public Cliente fromDTO(ClienteNewDTO dto) {
