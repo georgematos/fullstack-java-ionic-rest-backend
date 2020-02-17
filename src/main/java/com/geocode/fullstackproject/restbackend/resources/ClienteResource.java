@@ -47,13 +47,6 @@ public class ClienteResource {
     return ResponseEntity.ok().body(cliente);
   }
 
-  @PutMapping(value = "/{id}")
-  public ResponseEntity<Cliente> update(@PathVariable Long id, @Valid @RequestBody ClienteDTO entityWithNewDataDTO) {
-    Cliente cliente = service.fromDTO(entityWithNewDataDTO);
-    cliente = service.update(id, cliente);
-    return ResponseEntity.ok().body(cliente);
-  }
-
   @DeleteMapping(value = "/{id}")
   public ResponseEntity<Void> delete(@PathVariable Long id) {
     service.delete(id);
@@ -71,11 +64,18 @@ public class ClienteResource {
   }
 
   @PostMapping
-  public ResponseEntity<Cliente> save(@RequestBody ClienteNewDTO newDTO) {
+  public ResponseEntity<Cliente> save(@Valid @RequestBody ClienteNewDTO newDTO) {
     Cliente entity = service.fromDTO(newDTO);
     entity = service.insert(newDTO);
     URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(entity.getId()).toUri();
     return ResponseEntity.created(uri).body(entity);
+  }
+
+  @PutMapping(value = "/{id}")
+  public ResponseEntity<Cliente> update(@PathVariable Long id, @RequestBody ClienteDTO ClienteWithNewData) {
+    Cliente cliente = service.fromDTO(ClienteWithNewData);
+    cliente = service.update(id, cliente);
+    return ResponseEntity.ok().body(cliente);
   }
 
 }

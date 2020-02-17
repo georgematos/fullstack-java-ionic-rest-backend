@@ -2,14 +2,14 @@ package com.geocode.fullstackproject.restbackend.domain.dto;
 
 import java.io.Serializable;
 
+import com.geocode.fullstackproject.restbackend.service.validations.cliente.ClienteInsert;
+
 /**
  * ClienteNewDTO
  */
+@ClienteInsert
 public class ClienteNewDTO implements Serializable {
 
-  /**
-   *
-   */
   private static final long serialVersionUID = 1L;
 
   public ClienteNewDTO() {

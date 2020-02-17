@@ -11,7 +11,7 @@ import com.geocode.fullstackproject.restbackend.domain.enums.TipoCliente;
 import com.geocode.fullstackproject.restbackend.repository.CidadeRepository;
 import com.geocode.fullstackproject.restbackend.repository.ClienteRepository;
 import com.geocode.fullstackproject.restbackend.repository.EnderecoRepository;
-import com.geocode.fullstackproject.restbackend.service.exceptions.EntidadeNaoEncontradaException;
+import com.geocode.fullstackproject.restbackend.service.exceptions.ObjectNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -39,7 +39,7 @@ public class ClienteService {
   }
 
   public Cliente findById(Long id) {
-    return repository.findById(id).orElseThrow(() -> new EntidadeNaoEncontradaException(
+    return repository.findById(id).orElseThrow(() -> new ObjectNotFoundException(
         String.format("Objeto não encontrado. Id: %d. Tipo: %s", id, Cliente.class.getName())));
   }
 
@@ -58,10 +58,10 @@ public class ClienteService {
     return repository.save(entity);
   }
 
-  public Cliente update(Long id, Cliente catNewData) {
-    Cliente cliente = findById(id);
-    updateData(cliente, catNewData);
-    return repository.save(cliente);
+  public Cliente update(Long id, Cliente clienteNewData) {
+    Cliente entity = findById(id);
+    updateData(entity, clienteNewData);
+    return repository.save(entity);
   }
 
   public Page<Cliente> findPage(Integer page, Integer linesPerPages, String direction, String orderBy) {

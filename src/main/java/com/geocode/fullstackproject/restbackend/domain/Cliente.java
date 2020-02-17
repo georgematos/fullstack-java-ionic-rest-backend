@@ -20,7 +20,6 @@ import javax.validation.constraints.NotEmpty;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.geocode.fullstackproject.restbackend.domain.enums.TipoCliente;
-import com.geocode.fullstackproject.restbackend.service.validations.cliente.CpfOuCnpj;
 
 import org.hibernate.validator.constraints.Length;
 
@@ -28,7 +27,6 @@ import org.hibernate.validator.constraints.Length;
  * Cliente
  */
 @Entity
-@CpfOuCnpj
 public class Cliente implements Serializable {
 
   private static final long serialVersionUID = 1L;

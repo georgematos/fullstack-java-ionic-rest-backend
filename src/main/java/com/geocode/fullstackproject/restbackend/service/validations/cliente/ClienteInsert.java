@@ -7,10 +7,10 @@ import java.lang.annotation.Target;
 import javax.validation.Constraint;
 import javax.validation.Payload;
 
-@Constraint(validatedBy = CpfOuCnpjValidator.class)
+@Constraint(validatedBy = ClienteInsertValidator.class)
 @Target({ ElementType.TYPE })
 @Retention(RetentionPolicy.RUNTIME)
-public @interface CpfOuCnpj {
+public @interface ClienteInsert {
   public String message() default "Erro de validação";
 
   public Class<?>[] groups() default {};

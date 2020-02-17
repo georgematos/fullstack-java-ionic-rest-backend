@@ -5,7 +5,7 @@ import java.util.List;
 import com.geocode.fullstackproject.restbackend.domain.Categoria;
 import com.geocode.fullstackproject.restbackend.domain.dto.CategoriaDTO;
 import com.geocode.fullstackproject.restbackend.repository.CategoriaRepository;
-import com.geocode.fullstackproject.restbackend.service.exceptions.EntidadeNaoEncontradaException;
+import com.geocode.fullstackproject.restbackend.service.exceptions.ObjectNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -27,8 +27,8 @@ public class CategoriaService {
   }
 
   public Categoria findById(Long id) {
-    return repository.findById(id).orElseThrow(() -> new EntidadeNaoEncontradaException(
-        "Objeto não encontrado. ID: " + id + " Tipo: " + Categoria.class.getName()));
+    return repository.findById(id).orElseThrow(
+        () -> new ObjectNotFoundException("Objeto não encontrado. ID: " + id + " Tipo: " + Categoria.class.getName()));
   }
 
   public List<Categoria> findAll() {
