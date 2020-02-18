@@ -1,8 +1,6 @@
 package com.geocode.fullstackproject.restbackend.resources;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import com.geocode.fullstackproject.restbackend.domain.Produto;
 import com.geocode.fullstackproject.restbackend.domain.dto.ProdutoDTO;
@@ -45,7 +43,7 @@ public class ProdutoResource {
       @RequestParam(value = "linesPerPage", defaultValue = "24") Integer linesPerPages,
       @RequestParam(value = "direction", defaultValue = "ASC") String direction,
       @RequestParam(value = "orderBy", defaultValue = "nome") String orderBy) {
-    
+
     String nomeDecoded = URLHandler.convertUTF8Param(nome);
     List<Long> categoriasIds = URLHandler.parseLongStringParams(categorias);
 

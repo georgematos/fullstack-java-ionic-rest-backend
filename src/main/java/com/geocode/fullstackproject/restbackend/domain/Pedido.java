@@ -66,6 +66,10 @@ public class Pedido implements Serializable {
     return produtos;
   }
 
+  public Double getTotalPedidos() {
+    return items.stream().map(x -> x.getSubTotal()).reduce((x, y) -> x + y).get();
+  }
+
   public Long getId() {
     return id;
   }
