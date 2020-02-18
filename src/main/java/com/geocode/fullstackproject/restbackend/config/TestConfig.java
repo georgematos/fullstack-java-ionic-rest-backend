@@ -165,8 +165,8 @@ public class TestConfig implements CommandLineRunner {
     ItemPedido itemPedido2 = new ItemPedido(pedido1, p3, 0.0, 2, 80.0);
     ItemPedido itemPedido3 = new ItemPedido(pedido2, p2, 100.0, 1, 800.0);
 
-    pedido1.getItems().addAll(Arrays.asList(itemPedido1, itemPedido2));
-    pedido2.getItems().addAll(Arrays.asList(itemPedido3));
+    pedido1.getItens().addAll(Arrays.asList(itemPedido1, itemPedido2));
+    pedido2.getItens().addAll(Arrays.asList(itemPedido3));
 
     p1.getItens().addAll(Arrays.asList(itemPedido1));
     p2.getItens().addAll(Arrays.asList(itemPedido3));

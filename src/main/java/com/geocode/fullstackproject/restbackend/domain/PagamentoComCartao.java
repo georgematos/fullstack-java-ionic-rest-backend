@@ -2,12 +2,14 @@ package com.geocode.fullstackproject.restbackend.domain;
 
 import javax.persistence.Entity;
 
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.geocode.fullstackproject.restbackend.domain.enums.EstadoPagamento;
 
 /**
  * PagamentoComCartao
  */
 @Entity
+@JsonTypeName("pagamentoComCartao")
 public class PagamentoComCartao extends Pagamento {
 
   private static final long serialVersionUID = 1L;
