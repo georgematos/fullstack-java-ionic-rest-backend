@@ -36,7 +36,7 @@ import org.springframework.context.annotation.Profile;
  * TestConfig
  */
 @Configuration
-@Profile("test")
+@Profile("dev")
 public class TestConfig implements CommandLineRunner {
 
   private CategoriaRepository categoriaRepository;
