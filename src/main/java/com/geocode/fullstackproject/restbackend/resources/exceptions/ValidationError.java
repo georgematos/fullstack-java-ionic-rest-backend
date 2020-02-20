@@ -1,10 +1,9 @@
 package com.geocode.fullstackproject.restbackend.resources.exceptions;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ValidationError extends StandardError implements Serializable {
+public class ValidationError extends StandardError {
 
   private static final long serialVersionUID = 1L;
 
