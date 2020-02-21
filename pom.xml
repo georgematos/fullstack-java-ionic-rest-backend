@@ -8,9 +8,9 @@
     <relativePath/>
   </parent>
   <groupId>com.geocode.fullstackproject</groupId>
-  <artifactId>restbackend</artifactId>
+  <artifactId>java-rest-ionic</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  <name>restbackend</name>
+  <name>java-rest-ionic</name>
   <description>BackendRestApplication project for Spring Boot</description>
   <properties>
     <java.version>1.8</java.version>
