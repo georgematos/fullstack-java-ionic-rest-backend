@@ -8,12 +8,12 @@
     <relativePath/>
   </parent>
   <groupId>com.geocode.fullstackproject</groupId>
-  <artifactId>restbackend</artifactId>
+  <artifactId>java-rest-ionic</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  <name>restbackend</name>
+  <name>java-rest-ionic</name>
   <description>BackendRestApplication project for Spring Boot</description>
   <properties>
-    <java.version>11</java.version>
+    <java.version>1.8</java.version>
   </properties>
   <dependencies>
     <dependency>
@@ -63,6 +63,11 @@
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>com.heroku.sdk</groupId>
+        <artifactId>heroku-maven-plugin</artifactId>
+        <version>2.0.16</version>
       </plugin>
     </plugins>
   </build>
