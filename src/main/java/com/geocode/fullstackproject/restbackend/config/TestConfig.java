@@ -1,9 +1,12 @@
 package com.geocode.fullstackproject.restbackend.config;
 
 import com.geocode.fullstackproject.restbackend.service.DBService;
+import com.geocode.fullstackproject.restbackend.service.EmailService;
+import com.geocode.fullstackproject.restbackend.service.MockEmailService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
@@ -24,4 +27,8 @@ public class TestConfig implements CommandLineRunner {
 
   }
 
+  @Bean
+  public EmailService emailService() {
+    return new MockEmailService();
+  }
 }

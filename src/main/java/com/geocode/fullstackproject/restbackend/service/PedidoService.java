@@ -25,16 +25,18 @@ public class PedidoService {
   private ProdutoService produtoService;
   private ItemPedidoService itemPedidoService;
   private ClienteService clienteService;
+  private EmailService emailService;
 
   @Autowired
   public PedidoService(PedidoRepository repository, BoletoService boletoService, PagamentoService pagamentoService,
-      ProdutoService produtoService, ItemPedidoService itemPedidoService, ClienteService clienteService) {
+      ProdutoService produtoService, ItemPedidoService itemPedidoService, ClienteService clienteService, EmailService emailService) {
     this.repository = repository;
     this.boletoService = boletoService;
     this.pagamentoService = pagamentoService;
     this.produtoService = produtoService;
     this.itemPedidoService = itemPedidoService;
     this.clienteService = clienteService;
+    this.emailService = emailService;
   }
 
   public Pedido findById(Long id) {
@@ -63,6 +65,9 @@ public class PedidoService {
       ip.setPedido(pedido);
     }
     itemPedidoService.saveAll(pedido.getItens());
+
+    emailService.sendOrderConfirmationEmail(pedido);
+
     return pedido;
   }
 
