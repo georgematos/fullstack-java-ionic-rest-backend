@@ -1,6 +1,8 @@
 package com.geocode.fullstackproject.restbackend.config;
 
 import com.geocode.fullstackproject.restbackend.service.DBService;
+import com.geocode.fullstackproject.restbackend.service.EmailService;
+import com.geocode.fullstackproject.restbackend.service.SmtpEmailService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -30,6 +32,11 @@ public class DevConfig {
 
     dbService.instantiateTestDatabase();
     return true;
+  }
+
+  @Bean
+  public EmailService emailService() {
+    return new SmtpEmailService();
   }
 
 }
