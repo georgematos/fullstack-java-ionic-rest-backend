@@ -24,15 +24,17 @@ public class PedidoService {
   private PagamentoService pagamentoService;
   private ProdutoService produtoService;
   private ItemPedidoService itemPedidoService;
+  private ClienteService clienteService;
 
   @Autowired
   public PedidoService(PedidoRepository repository, BoletoService boletoService, PagamentoService pagamentoService,
-      ProdutoService produtoService, ItemPedidoService itemPedidoService) {
+      ProdutoService produtoService, ItemPedidoService itemPedidoService, ClienteService clienteService) {
     this.repository = repository;
     this.boletoService = boletoService;
     this.pagamentoService = pagamentoService;
     this.produtoService = produtoService;
     this.itemPedidoService = itemPedidoService;
+    this.clienteService = clienteService;
   }
 
   public Pedido findById(Long id) {
@@ -44,6 +46,7 @@ public class PedidoService {
   public Pedido insert(Pedido pedido) {
     pedido.setId(null);
     pedido.setInstant(LocalDateTime.now());
+    pedido.setCliente(clienteService.findById(pedido.getCliente().getId()));
     pedido.getPagamento().setEstado(EstadoPagamento.PENDENTE);
     pedido.getPagamento().setPedido(pedido);
     if (pedido.getPagamento() instanceof PagamentoComBoleto) {
@@ -55,7 +58,8 @@ public class PedidoService {
     pagamentoService.insert(pedido.getPagamento());
     for (ItemPedido ip : pedido.getItens()) {
       ip.setDesconto(0.0);
-      ip.setPreco(produtoService.findById(ip.getProduto().getId()).getPreco());
+      ip.setProduto(produtoService.findById(ip.getProduto().getId()));
+      ip.setPreco(ip.getProduto().getPreco());
       ip.setPedido(pedido);
     }
     itemPedidoService.saveAll(pedido.getItens());
