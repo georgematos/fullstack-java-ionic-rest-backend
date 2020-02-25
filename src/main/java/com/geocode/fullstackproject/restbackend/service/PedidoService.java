@@ -29,7 +29,8 @@ public class PedidoService {
 
   @Autowired
   public PedidoService(PedidoRepository repository, BoletoService boletoService, PagamentoService pagamentoService,
-      ProdutoService produtoService, ItemPedidoService itemPedidoService, ClienteService clienteService, EmailService emailService) {
+      ProdutoService produtoService, ItemPedidoService itemPedidoService, ClienteService clienteService,
+      EmailService emailService) {
     this.repository = repository;
     this.boletoService = boletoService;
     this.pagamentoService = pagamentoService;
@@ -66,7 +67,7 @@ public class PedidoService {
     }
     itemPedidoService.saveAll(pedido.getItens());
 
-    emailService.sendOrderConfirmationEmail(pedido);
+    emailService.sendOrderConfirmationHtmlEmail(pedido);
 
     return pedido;
   }
