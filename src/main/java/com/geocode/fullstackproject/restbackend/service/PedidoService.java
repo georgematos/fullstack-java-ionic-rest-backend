@@ -10,6 +10,7 @@ import com.geocode.fullstackproject.restbackend.repository.PedidoRepository;
 import com.geocode.fullstackproject.restbackend.service.exceptions.ObjectNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,19 +26,20 @@ public class PedidoService {
   private ProdutoService produtoService;
   private ItemPedidoService itemPedidoService;
   private ClienteService clienteService;
+
+  @Autowired
+  @Qualifier("smtpEmailService")
   private EmailService emailService;
 
   @Autowired
   public PedidoService(PedidoRepository repository, BoletoService boletoService, PagamentoService pagamentoService,
-      ProdutoService produtoService, ItemPedidoService itemPedidoService, ClienteService clienteService,
-      EmailService emailService) {
+      ProdutoService produtoService, ItemPedidoService itemPedidoService, ClienteService clienteService) {
     this.repository = repository;
     this.boletoService = boletoService;
     this.pagamentoService = pagamentoService;
     this.produtoService = produtoService;
     this.itemPedidoService = itemPedidoService;
     this.clienteService = clienteService;
-    this.emailService = emailService;
   }
 
   public Pedido findById(Long id) {
