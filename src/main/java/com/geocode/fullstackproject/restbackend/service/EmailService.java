@@ -5,7 +5,6 @@ import javax.mail.internet.MimeMessage;
 import com.geocode.fullstackproject.restbackend.domain.Pedido;
 
 import org.springframework.mail.SimpleMailMessage;
-import org.springframework.stereotype.Service;
 
 public interface EmailService {
 
