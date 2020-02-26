@@ -28,6 +28,7 @@ import com.geocode.fullstackproject.restbackend.repository.PedidoRepository;
 import com.geocode.fullstackproject.restbackend.repository.ProdutoRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 /**
@@ -45,12 +46,13 @@ public class DBService {
   private PagamentoRepository pagamentoRepository;
   private PedidoRepository pedidoRepository;
   private ItemPedidoRepository itemPedidoRepository;
+  private BCryptPasswordEncoder bCrypt;
 
   @Autowired
   public DBService(CategoriaRepository categoriaRepository, ProdutoRepository produtoRepository,
       EstadoRepository estadoRepository, CidadeRepository cidadeRepository, ClienteRepository clienteRepository,
       EnderecoRepository enderecoRepository, PagamentoRepository pagamentoRepository, PedidoRepository pedidoRepository,
-      ItemPedidoRepository itemPedidoRepository) {
+      ItemPedidoRepository itemPedidoRepository, BCryptPasswordEncoder bCrypt) {
     this.categoriaRepository = categoriaRepository;
     this.produtoRepository = produtoRepository;
     this.estadoRepository = estadoRepository;
@@ -60,6 +62,7 @@ public class DBService {
     this.pagamentoRepository = pagamentoRepository;
     this.pedidoRepository = pedidoRepository;
     this.itemPedidoRepository = itemPedidoRepository;
+    this.bCrypt = bCrypt;
   }
 
   public void instantiateTestDatabase() throws Exception {
@@ -125,8 +128,8 @@ public class DBService {
     estadoRepository.saveAll(Arrays.asList(estado1, estado2));
     cidadeRepository.saveAll(Arrays.asList(cidade1, cidade2, cidade3));
 
-    Cliente cliente1 = new Cliente(null, "Maria Silva", "georgemattos@gmail.com", "37258072217",
-        TipoCliente.PESSOAFISICA);
+    Cliente cliente1 = new Cliente(null, "George Matos", "georgemattos@gmail.com", "37258072217",
+        TipoCliente.PESSOAFISICA, bCrypt.encode("senhadocliente***38283293"));
     cliente1.getTelefones().addAll(Arrays.asList("27368833", "88372299"));
 
     // clienteRepository.saveAll(Arrays.asList(cliente1));

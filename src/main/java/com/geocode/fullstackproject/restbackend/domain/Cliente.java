@@ -47,6 +47,10 @@ public class Cliente implements Serializable {
   private String cpfOuCnpj;
   private Integer tipo;
 
+  @JsonIgnore
+  @NotEmpty
+  private String senha;
+
   // Quando uma associação for muito simples, com apenas 1 campo, pode-se fazer
   // assim não precisa criar uma entidade para a tabela telefone.
   @ElementCollection
@@ -70,12 +74,13 @@ public class Cliente implements Serializable {
     this.email = email;
   }
 
-  public Cliente(Long id, String nome, String email, String cpfouCnpj, TipoCliente tipo) {
+  public Cliente(Long id, String nome, String email, String cpfouCnpj, TipoCliente tipo, String senha) {
     this.id = id;
     this.nome = nome;
     this.email = email;
     this.cpfOuCnpj = cpfouCnpj;
     this.tipo = tipo.getCod();
+    this.senha = senha;
   }
 
   public Long getId() {
@@ -116,6 +121,14 @@ public class Cliente implements Serializable {
 
   public void setTipo(TipoCliente tipo) {
     this.tipo = tipo.getCod();
+  }
+
+  public String getSenha() {
+    return senha;
+  }
+
+  public void setSenha(String senha) {
+    this.senha = senha;
   }
 
   public Set<String> getTelefones() {

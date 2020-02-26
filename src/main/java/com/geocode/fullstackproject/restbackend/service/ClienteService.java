@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,13 +30,15 @@ public class ClienteService {
   final private ClienteRepository repository;
   final private EnderecoRepository enderecoRepository;
   final private CidadeRepository cidadeRepository;
+  final private BCryptPasswordEncoder bCrypt;
 
   @Autowired
   public ClienteService(ClienteRepository repository, EnderecoRepository enderecoRepository,
-      CidadeRepository cidadeRepository) {
+      CidadeRepository cidadeRepository, BCryptPasswordEncoder bCrypt) {
     this.repository = repository;
     this.enderecoRepository = enderecoRepository;
     this.cidadeRepository = cidadeRepository;
+    this.bCrypt = bCrypt;
   }
 
   public Cliente findById(Long id) {
@@ -83,7 +86,7 @@ public class ClienteService {
 
   public Cliente fromDTO(ClienteNewDTO dto) {
     Cliente cliente = new Cliente(null, dto.getNome(), dto.getEmail(), dto.getCpfOuCnpj(),
-        TipoCliente.toEnum(dto.getTipo()));
+        TipoCliente.toEnum(dto.getTipo()), bCrypt.encode(dto.getSenha()));
     Cidade cidade = cidadeRepository.findById(dto.getCidadeId()).get();
     Endereco end = new Endereco(null, dto.getLogradouro(), dto.getNumero(), dto.getComplemento(), dto.getBairro(),
         dto.getCep(), cidade, cliente);

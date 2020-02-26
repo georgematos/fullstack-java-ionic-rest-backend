@@ -16,6 +16,7 @@ public class ClienteDTO implements Serializable {
   private Long id;
   private String nome;
   private String email;
+  private String senha;
 
   public ClienteDTO() {
   }
@@ -24,6 +25,7 @@ public class ClienteDTO implements Serializable {
     id = cliente.getId();
     nome = cliente.getNome();
     email = cliente.getEmail();
+    senha = cliente.getSenha();
   }
 
   public Long getId() {
@@ -48,6 +50,14 @@ public class ClienteDTO implements Serializable {
 
   public void setEmail(String email) {
     this.email = email;
+  }
+
+  public String getSenha() {
+    return senha;
+  }
+
+  public void setSenha(String senha) {
+    this.senha = senha;
   }
 
 }
