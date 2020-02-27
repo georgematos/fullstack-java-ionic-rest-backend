@@ -4,8 +4,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 
-import javax.validation.Valid;
-
 import com.geocode.fullstackproject.restbackend.domain.Categoria;
 import com.geocode.fullstackproject.restbackend.domain.Cidade;
 import com.geocode.fullstackproject.restbackend.domain.Cliente;
@@ -133,7 +131,7 @@ public class DBService {
         TipoCliente.PESSOAFISICA, bCrypt.encode("senhadocliente***38283293"));
     cliente1.getTelefones().addAll(Arrays.asList("27368833", "88372299"));
 
-    Cliente cliente2 = new Cliente(null, "Ana Costa", "georgemattos@gmail.com", "49608628660",
+    Cliente cliente2 = new Cliente(null, "Ana Costa", "ana@gmail.com", "49608628660",
         TipoCliente.PESSOAFISICA, bCrypt.encode("senhadocliente***34091834098"));
     cliente1.getTelefones().addAll(Arrays.asList("27678844", "88382185"));
     cliente2.setPerfil(Perfil.ADMIN);
