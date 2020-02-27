@@ -5,23 +5,22 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.geocode.fullstackproject.restbackend.domain.enums.Perfil;
 import com.geocode.fullstackproject.restbackend.domain.enums.TipoCliente;
-
-import org.hibernate.validator.constraints.Length;
 
 /**
  * Cliente
@@ -35,20 +34,12 @@ public class Cliente implements Serializable {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @NotEmpty(message = "Preenchimento obrigatório")
-  @Length(min = 5, max = 80, message = "Tamnho deve ser entre 5 e 80 cacacteres")
   private String nome;
-
-  @Email(message = "Email inválido")
-  @NotEmpty(message = "Preenchimento obrigatório")
   private String email;
-
-  @NotEmpty(message = "Preenchimento obrigatório")
   private String cpfOuCnpj;
   private Integer tipo;
 
   @JsonIgnore
-  @NotEmpty
   private String senha;
 
   // Quando uma associação for muito simples, com apenas 1 campo, pode-se fazer
@@ -56,6 +47,10 @@ public class Cliente implements Serializable {
   @ElementCollection
   @CollectionTable(name = "TELEFONE")
   private Set<String> telefones = new HashSet<>();
+
+  @ElementCollection(fetch = FetchType.EAGER)
+  @CollectionTable(name = "PERFIS")
+  private Set<Integer> perfis = new HashSet<>();
 
   @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
   @JsonManagedReference
@@ -66,12 +61,14 @@ public class Cliente implements Serializable {
   private List<Pedido> pedidos = new ArrayList<>();
 
   public Cliente() {
+    setPerfil(Perfil.CLIENTE);
   }
 
   public Cliente(Long id, String nome, String email) {
     this.id = id;
     this.nome = nome;
     this.email = email;
+    setPerfil(Perfil.CLIENTE);
   }
 
   public Cliente(Long id, String nome, String email, String cpfouCnpj, TipoCliente tipo, String senha) {
@@ -81,6 +78,7 @@ public class Cliente implements Serializable {
     this.cpfOuCnpj = cpfouCnpj;
     this.tipo = tipo.getCod();
     this.senha = senha;
+    setPerfil(Perfil.CLIENTE);
   }
 
   public Long getId() {
@@ -129,6 +127,14 @@ public class Cliente implements Serializable {
 
   public void setSenha(String senha) {
     this.senha = senha;
+  }
+
+  public Set<Perfil> getPerfis() {
+    return perfis.stream().map(x -> Perfil.toEnum(x)).collect(Collectors.toSet());
+  }
+
+  public void setPerfil(Perfil perfil) {
+    perfis.add(perfil.getCod());
   }
 
   public Set<String> getTelefones() {

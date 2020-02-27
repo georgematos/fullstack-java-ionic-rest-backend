@@ -2,7 +2,12 @@ package com.geocode.fullstackproject.restbackend.domain.dto;
 
 import java.io.Serializable;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+
 import com.geocode.fullstackproject.restbackend.service.validations.cliente.ClienteInsert;
+
+import org.hibernate.validator.constraints.Length;
 
 /**
  * ClienteNewDTO
@@ -15,10 +20,18 @@ public class ClienteNewDTO implements Serializable {
   public ClienteNewDTO() {
   }
 
+  @NotEmpty(message = "Preenchimento obrigatório")
+  @Length(min = 5, max = 80, message = "Tamnho deve ser entre 5 e 80 cacacteres")
   private String nome;
+
+  @NotEmpty
   private String senha;
 
+  @Email(message = "Email inválido")
+  @NotEmpty(message = "Preenchimento obrigatório")
   private String email;
+
+  @NotEmpty(message = "Preenchimento obrigatório")
   private String cpfOuCnpj;
   private Integer tipo;
 

@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 
+import javax.validation.Valid;
+
 import com.geocode.fullstackproject.restbackend.domain.Categoria;
 import com.geocode.fullstackproject.restbackend.domain.Cidade;
 import com.geocode.fullstackproject.restbackend.domain.Cliente;
@@ -16,6 +18,7 @@ import com.geocode.fullstackproject.restbackend.domain.PagamentoComCartao;
 import com.geocode.fullstackproject.restbackend.domain.Pedido;
 import com.geocode.fullstackproject.restbackend.domain.Produto;
 import com.geocode.fullstackproject.restbackend.domain.enums.EstadoPagamento;
+import com.geocode.fullstackproject.restbackend.domain.enums.Perfil;
 import com.geocode.fullstackproject.restbackend.domain.enums.TipoCliente;
 import com.geocode.fullstackproject.restbackend.repository.CategoriaRepository;
 import com.geocode.fullstackproject.restbackend.repository.CidadeRepository;
@@ -116,8 +119,6 @@ public class DBService {
     Estado estado1 = new Estado(null, "Ceará");
     Estado estado2 = new Estado(null, "São Paulo");
 
-    // estadoRepository.saveAll(Arrays.asList(estado1, estado2));
-
     Cidade cidade1 = new Cidade(null, "Maracanaú", estado1);
     Cidade cidade2 = new Cidade(null, "São Paulo", estado2);
     Cidade cidade3 = new Cidade(null, "Campinas", estado2);
@@ -132,20 +133,21 @@ public class DBService {
         TipoCliente.PESSOAFISICA, bCrypt.encode("senhadocliente***38283293"));
     cliente1.getTelefones().addAll(Arrays.asList("27368833", "88372299"));
 
-    // clienteRepository.saveAll(Arrays.asList(cliente1));
-
+    Cliente cliente2 = new Cliente(null, "Ana Costa", "georgemattos@gmail.com", "49608628660",
+        TipoCliente.PESSOAFISICA, bCrypt.encode("senhadocliente***34091834098"));
+    cliente1.getTelefones().addAll(Arrays.asList("27678844", "88382185"));
+    cliente2.setPerfil(Perfil.ADMIN);
+    
     Endereco endereco1 = new Endereco(null, "Rua Flores", "300", "Apto 203", "Jardim", "38220834", cidade1, cliente1);
-    Endereco endereco2 = new Endereco(null, "Avenida Matos", "105", "Sala 800", "Centro", "38777012", cidade2,
-        cliente1);
+    Endereco endereco2 = new Endereco(null, "Avenida Matos", "105", "Sala 800", "Centro", "38777012", cidade2, cliente1);
+    Endereco endereco3 = new Endereco(null, "Rua Gringolandia", "666", null, "Rebimboca da Parafuseta", "56773012", cidade2, cliente2);
 
     cliente1.getEnderecos().addAll(Arrays.asList(endereco1, endereco2));
+    cliente2.getEnderecos().addAll(Arrays.asList(endereco3));
 
-    clienteRepository.saveAll(Arrays.asList(cliente1));
-    enderecoRepository.saveAll(Arrays.asList(endereco1, endereco2));
+    clienteRepository.saveAll(Arrays.asList(cliente1, cliente2));
+    enderecoRepository.saveAll(Arrays.asList(endereco1, endereco2, endereco3));
 
-    // DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy
-    // HH:mm");
-    // LocalDateTime date = formatter.parse("30/09/2017 10:32");
     LocalDateTime datePedido1 = LocalDateTime.of(2017, 9, 30, 10, 32);
     LocalDateTime datePedido2 = LocalDateTime.of(2017, 10, 10, 19, 35);
 
