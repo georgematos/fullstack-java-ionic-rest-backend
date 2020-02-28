@@ -13,6 +13,7 @@ import com.geocode.fullstackproject.restbackend.service.CategoriaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -50,6 +51,7 @@ public class CategoriaResource {
     return ResponseEntity.ok().body(categoria);
   }
 
+  @PreAuthorize("hasAnyRole('ADMIN')")
   @PostMapping
   public ResponseEntity<Categoria> save(@Valid @RequestBody CategoriaDTO entityDTO) {
     Categoria categoria = service.fromDTO(entityDTO);
@@ -58,6 +60,7 @@ public class CategoriaResource {
     return ResponseEntity.created(uri).body(categoria);
   }
 
+  @PreAuthorize("hasAnyRole('ADMIN')")
   @PutMapping(value = "/{id}")
   public ResponseEntity<Categoria> update(@PathVariable Long id,
       @Valid @RequestBody CategoriaDTO entityWithNewDataDTO) {
@@ -66,6 +69,7 @@ public class CategoriaResource {
     return ResponseEntity.ok().body(categoria);
   }
 
+  @PreAuthorize("hasAnyRole('ADMIN')")
   @DeleteMapping(value = "/{id}")
   public ResponseEntity<Void> delete(@PathVariable Long id) {
     service.delete(id);
