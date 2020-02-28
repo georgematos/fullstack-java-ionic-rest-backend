@@ -7,10 +7,13 @@ import com.geocode.fullstackproject.restbackend.domain.Cliente;
 import com.geocode.fullstackproject.restbackend.domain.Endereco;
 import com.geocode.fullstackproject.restbackend.domain.dto.ClienteDTO;
 import com.geocode.fullstackproject.restbackend.domain.dto.ClienteNewDTO;
+import com.geocode.fullstackproject.restbackend.domain.enums.Perfil;
 import com.geocode.fullstackproject.restbackend.domain.enums.TipoCliente;
 import com.geocode.fullstackproject.restbackend.repository.CidadeRepository;
 import com.geocode.fullstackproject.restbackend.repository.ClienteRepository;
 import com.geocode.fullstackproject.restbackend.repository.EnderecoRepository;
+import com.geocode.fullstackproject.restbackend.security.UserSS;
+import com.geocode.fullstackproject.restbackend.service.exceptions.AuthorizationException;
 import com.geocode.fullstackproject.restbackend.service.exceptions.ObjectNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +45,12 @@ public class ClienteService {
   }
 
   public Cliente findById(Long id) {
+
+    UserSS user = UserService.authenticatedUser();
+    if(user == null || !user.hasRole(Perfil.ADMIN) && !id.equals(user.getId())) {
+      throw new AuthorizationException("Acesso Negado");
+    }
+
     return repository.findById(id).orElseThrow(() -> new ObjectNotFoundException(
         String.format("Objeto não encontrado. Id: %d. Tipo: %s", id, Cliente.class.getName())));
   }
