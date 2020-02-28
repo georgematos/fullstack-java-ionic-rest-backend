@@ -1,6 +1,7 @@
 package com.geocode.fullstackproject.restbackend.config;
 
 import com.geocode.fullstackproject.restbackend.security.JWTAuthenticationFilter;
+import com.geocode.fullstackproject.restbackend.security.JWTAuthorizationFilter;
 import com.geocode.fullstackproject.restbackend.security.JWTUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,11 +39,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   @Override
   protected void configure(HttpSecurity http) throws Exception {
     http.cors().and().csrf().disable();
-    http.authorizeRequests()
-      .antMatchers(PUBLIC_MATCHERS).permitAll()
-      .antMatchers(HttpMethod.GET, PUBLIC_MATCHERS_GET).permitAll()
-      .anyRequest().authenticated();
+    http.authorizeRequests().antMatchers(PUBLIC_MATCHERS).permitAll().antMatchers(HttpMethod.GET, PUBLIC_MATCHERS_GET)
+        .permitAll().anyRequest().authenticated();
     http.addFilter(new JWTAuthenticationFilter(authenticationManager(), jwtUtil));
+    http.addFilter(new JWTAuthorizationFilter(authenticationManager(), jwtUtil, userDetailService));
     http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
   }
 

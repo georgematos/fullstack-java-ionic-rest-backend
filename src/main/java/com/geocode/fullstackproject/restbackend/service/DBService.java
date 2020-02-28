@@ -131,14 +131,16 @@ public class DBService {
         TipoCliente.PESSOAFISICA, bCrypt.encode("senhadocliente***38283293"));
     cliente1.getTelefones().addAll(Arrays.asList("27368833", "88372299"));
 
-    Cliente cliente2 = new Cliente(null, "Ana Costa", "ana@gmail.com", "49608628660",
-        TipoCliente.PESSOAFISICA, bCrypt.encode("senhadocliente***34091834098"));
+    Cliente cliente2 = new Cliente(null, "Ana Costa", "ana@gmail.com", "49608628660", TipoCliente.PESSOAFISICA,
+        bCrypt.encode("senhadocliente***34091834098"));
     cliente1.getTelefones().addAll(Arrays.asList("27678844", "88382185"));
     cliente2.setPerfil(Perfil.ADMIN);
-    
+
     Endereco endereco1 = new Endereco(null, "Rua Flores", "300", "Apto 203", "Jardim", "38220834", cidade1, cliente1);
-    Endereco endereco2 = new Endereco(null, "Avenida Matos", "105", "Sala 800", "Centro", "38777012", cidade2, cliente1);
-    Endereco endereco3 = new Endereco(null, "Rua Gringolandia", "666", null, "Rebimboca da Parafuseta", "56773012", cidade2, cliente2);
+    Endereco endereco2 = new Endereco(null, "Avenida Matos", "105", "Sala 800", "Centro", "38777012", cidade2,
+        cliente1);
+    Endereco endereco3 = new Endereco(null, "Rua Gringolandia", "666", null, "Rebimboca da Parafuseta", "56773012",
+        cidade2, cliente2);
 
     cliente1.getEnderecos().addAll(Arrays.asList(endereco1, endereco2));
     cliente2.getEnderecos().addAll(Arrays.asList(endereco3));
