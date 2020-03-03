@@ -1,5 +1,6 @@
 package com.geocode.fullstackproject.restbackend.service;
 
+import java.net.URI;
 import java.util.List;
 
 import com.geocode.fullstackproject.restbackend.domain.Cidade;
@@ -23,6 +24,7 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * ClienteService
@@ -34,20 +36,22 @@ public class ClienteService {
   final private EnderecoRepository enderecoRepository;
   final private CidadeRepository cidadeRepository;
   final private BCryptPasswordEncoder bCrypt;
+  final private S3Service s3service;
 
   @Autowired
   public ClienteService(ClienteRepository repository, EnderecoRepository enderecoRepository,
-      CidadeRepository cidadeRepository, BCryptPasswordEncoder bCrypt) {
+      CidadeRepository cidadeRepository, BCryptPasswordEncoder bCrypt, S3Service s3Service) {
     this.repository = repository;
     this.enderecoRepository = enderecoRepository;
     this.cidadeRepository = cidadeRepository;
     this.bCrypt = bCrypt;
+    this.s3service = s3Service;
   }
 
   public Cliente findById(Long id) {
 
     UserSS user = UserService.authenticatedUser();
-    if(user == null || !user.hasRole(Perfil.ADMIN) && !id.equals(user.getId())) {
+    if (user == null || !user.hasRole(Perfil.ADMIN) && !id.equals(user.getId())) {
       throw new AuthorizationException("Acesso Negado");
     }
 
@@ -106,6 +110,10 @@ public class ClienteService {
     if (dto.getTelefone3() != null)
       cliente.getTelefones().add(dto.getTelefone3());
     return cliente;
+  }
+
+  public URI uploadProfilePicture(MultipartFile mpFile) {
+    return s3service.uploadFile(mpFile);
   }
 
 }
