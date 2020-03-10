@@ -2,8 +2,12 @@ package com.geocode.fullstackproject.restbackend.resources.exceptions;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.amazonaws.AmazonClientException;
+import com.amazonaws.AmazonServiceException;
+import com.amazonaws.services.s3.model.AmazonS3Exception;
 import com.geocode.fullstackproject.restbackend.service.exceptions.AuthorizationException;
 import com.geocode.fullstackproject.restbackend.service.exceptions.DataIntegrityException;
+import com.geocode.fullstackproject.restbackend.service.exceptions.FileException;
 import com.geocode.fullstackproject.restbackend.service.exceptions.ObjectNotFoundException;
 
 import org.springframework.http.HttpStatus;
@@ -42,6 +46,35 @@ public class ResourceExceptionHandler {
 			err.addError(x.getField(), x.getDefaultMessage());
 		}		
 		return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(err);
+	}
+
+	@ExceptionHandler(FileException.class)
+	public ResponseEntity<StandardError> fileException(FileException e, HttpServletRequest request) {
+		
+		ValidationError err = new ValidationError(System.currentTimeMillis(), HttpStatus.BAD_REQUEST.value(), "Erro de IO", e.getMessage(), request.getRequestURI());
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
+	}
+
+	@ExceptionHandler(AmazonServiceException.class)
+	public ResponseEntity<StandardError> amazonService(AmazonServiceException e, HttpServletRequest request) {
+		
+		HttpStatus code = HttpStatus.valueOf(e.getErrorCode());
+		ValidationError err = new ValidationError(System.currentTimeMillis(), code.value(), "Amazon Service error", e.getMessage(), request.getRequestURI());
+		return ResponseEntity.status(code).body(err);
+	}
+
+	@ExceptionHandler(AmazonClientException.class)
+	public ResponseEntity<StandardError> amazonClient(AmazonClientException e, HttpServletRequest request) {
+		
+		ValidationError err = new ValidationError(System.currentTimeMillis(), HttpStatus.BAD_REQUEST.value(), "Amazon Client error", e.getMessage(), request.getRequestURI());
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
+	}
+
+	@ExceptionHandler(AmazonS3Exception.class)
+	public ResponseEntity<StandardError> amazonS3(AmazonS3Exception e, HttpServletRequest request) {
+		
+		ValidationError err = new ValidationError(System.currentTimeMillis(), HttpStatus.BAD_REQUEST.value(), "Amazon S3 error", e.getMessage(), request.getRequestURI());
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
 	}
 
 	@ExceptionHandler(AuthorizationException.class)
