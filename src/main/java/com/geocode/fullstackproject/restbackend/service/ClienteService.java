@@ -44,6 +44,9 @@ public class ClienteService {
   @Value("${img.prefix.client.profile}")
   private String imgPrefix;
 
+  @Value("${img.profile.size}")
+  private Integer imgSize;
+
   @Autowired
   public ClienteService(ClienteRepository repository, EnderecoRepository enderecoRepository,
       CidadeRepository cidadeRepository, BCryptPasswordEncoder bCrypt, S3Service s3Service, ImageService imageService) {
@@ -126,6 +129,9 @@ public class ClienteService {
     }
     
     BufferedImage jpgImage = imageService.getJpgImageFromFile(mpFile);
+    jpgImage = imageService.cropSquare(jpgImage);
+    jpgImage = imageService.resize(jpgImage, imgSize);
+    
     String fileName = imgPrefix + user.getId() + ".jpg";
 
     return s3service.uploadFile(imageService.getInputStream(jpgImage, "jpg"), fileName, "image");
