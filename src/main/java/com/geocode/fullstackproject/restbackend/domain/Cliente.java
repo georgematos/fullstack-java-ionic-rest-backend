@@ -38,8 +38,7 @@ public class Cliente implements Serializable {
   private String email;
   private String cpfOuCnpj;
   private Integer tipo;
-  private String imgUrl;
-
+  
   @JsonIgnore
   private String senha;
 
@@ -120,14 +119,6 @@ public class Cliente implements Serializable {
 
   public void setTipo(TipoCliente tipo) {
     this.tipo = tipo.getCod();
-  }
-
-  public String getImgUrl() {
-    return imgUrl;
-  }
-
-  public void setImgUrl(String imgUrl) {
-    this.imgUrl = imgUrl;
   }
 
   public String getSenha() {

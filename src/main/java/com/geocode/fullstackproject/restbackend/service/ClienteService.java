@@ -1,5 +1,6 @@
 package com.geocode.fullstackproject.restbackend.service;
 
+import java.awt.image.BufferedImage;
 import java.net.URI;
 import java.util.List;
 
@@ -18,6 +19,7 @@ import com.geocode.fullstackproject.restbackend.service.exceptions.Authorization
 import com.geocode.fullstackproject.restbackend.service.exceptions.ObjectNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
@@ -37,15 +39,20 @@ public class ClienteService {
   final private CidadeRepository cidadeRepository;
   final private BCryptPasswordEncoder bCrypt;
   final private S3Service s3service;
+  final private ImageService imageService;
+
+  @Value("${img.prefix.client.profile}")
+  private String imgPrefix;
 
   @Autowired
   public ClienteService(ClienteRepository repository, EnderecoRepository enderecoRepository,
-      CidadeRepository cidadeRepository, BCryptPasswordEncoder bCrypt, S3Service s3Service) {
+      CidadeRepository cidadeRepository, BCryptPasswordEncoder bCrypt, S3Service s3Service, ImageService imageService) {
     this.repository = repository;
     this.enderecoRepository = enderecoRepository;
     this.cidadeRepository = cidadeRepository;
     this.bCrypt = bCrypt;
     this.s3service = s3Service;
+    this.imageService = imageService;
   }
 
   public Cliente findById(Long id) {
@@ -118,14 +125,10 @@ public class ClienteService {
       throw new AuthorizationException("Acesso Negado");
     }
     
-    URI uri = s3service.uploadFile(mpFile);
+    BufferedImage jpgImage = imageService.getJpgImageFromFile(mpFile);
+    String fileName = imgPrefix + user.getId() + ".jpg";
 
-    Cliente cli = repository.findById(user.getId()).orElseThrow(() -> new ObjectNotFoundException(
-        String.format("Objeto não encontrado. Id: %d. Tipo: %s", user.getId(), Cliente.class.getName())));
-    cli.setImgUrl(uri.toString());
-    repository.save(cli);
-
-    return uri;
+    return s3service.uploadFile(imageService.getInputStream(jpgImage, "jpg"), fileName, "image");
   }
 
 }
