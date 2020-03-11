@@ -69,6 +69,18 @@ public class ClienteService {
         String.format("Objeto não encontrado. Id: %d. Tipo: %s", id, Cliente.class.getName())));
   }
 
+  public Cliente findByEmail(String email) {
+    UserSS user = UserService.authenticatedUser();
+    if (user == null || !user.hasRole(Perfil.ADMIN) && !email.equals(user.getUsername())) {
+      throw new AuthorizationException("Acesso negado");
+    }
+    Cliente obj = repository.findByEmail(email);
+    if(obj == null) {
+      throw new ObjectNotFoundException("Objeto não encontrado! Id: " + user.getId() + ", Tipo: " + Cliente.class.getName());
+    }
+    return obj;
+  }
+
   public List<Cliente> findAll() {
     return repository.findAll();
   }
@@ -127,11 +139,11 @@ public class ClienteService {
     if (user == null) {
       throw new AuthorizationException("Acesso Negado");
     }
-    
+
     BufferedImage jpgImage = imageService.getJpgImageFromFile(mpFile);
     jpgImage = imageService.cropSquare(jpgImage);
     jpgImage = imageService.resize(jpgImage, imgSize);
-    
+
     String fileName = imgPrefix + user.getId() + ".jpg";
 
     return s3service.uploadFile(imageService.getInputStream(jpgImage, "jpg"), fileName, "image");

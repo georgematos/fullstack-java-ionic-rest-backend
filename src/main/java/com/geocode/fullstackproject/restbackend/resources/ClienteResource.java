@@ -50,6 +50,12 @@ public class ClienteResource {
     return ResponseEntity.ok().body(cliente);
   }
 
+  @GetMapping(value = "/email")
+  public ResponseEntity<Cliente> findByEmail(@RequestParam(value="value") String email) {
+    Cliente cliente = service.findByEmail(email);
+    return ResponseEntity.ok().body(cliente);
+  }
+
   @PreAuthorize("hasAnyRole('ADMIN')")
   @DeleteMapping(value = "/{id}")
   public ResponseEntity<Void> delete(@PathVariable Long id) {
@@ -84,7 +90,7 @@ public class ClienteResource {
   }
 
   @PostMapping(value = "/picture")
-  public ResponseEntity<String> uploadProfilePicture(@RequestParam(name="file") MultipartFile file) {
+  public ResponseEntity<String> uploadProfilePicture(@RequestParam(name = "file") MultipartFile file) {
     URI uri = service.uploadProfilePicture(file);
     return ResponseEntity.created(uri).body(uri.toString());
   }
