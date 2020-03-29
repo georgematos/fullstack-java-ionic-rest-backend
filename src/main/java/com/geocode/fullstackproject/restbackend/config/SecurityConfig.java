@@ -1,6 +1,7 @@
 package com.geocode.fullstackproject.restbackend.config;
 
 import java.util.Arrays;
+import java.util.Collections;
 
 import com.geocode.fullstackproject.restbackend.security.JWTAuthenticationFilter;
 import com.geocode.fullstackproject.restbackend.security.JWTAuthorizationFilter;
@@ -21,6 +22,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 
 /**
  * SecurityConfig
@@ -70,6 +72,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   @Bean
   public BCryptPasswordEncoder bCryptPasswordEncoder() {
     return new BCryptPasswordEncoder();
+  }
+
+  @Bean
+  public CorsFilter corsFilter() {
+    final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+    final CorsConfiguration config = new CorsConfiguration();
+    config.setAllowCredentials(true);
+    // Don't do this in production, use a proper list of allowed origins
+    // TODO trocar o endereço pelo do servidor de produção
+    config.setAllowedOrigins(Collections.singletonList("http://localhost:8100"));
+    config.setAllowedHeaders(Arrays.asList("Origin", "Content-Type", "Accept"));
+    config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "OPTIONS", "DELETE", "PATCH"));
+    source.registerCorsConfiguration("/**", config);
+    return new CorsFilter(source);
   }
 
 }
