@@ -22,7 +22,7 @@ public class HeaderExposureFilter implements Filter {
       throws IOException, ServletException {
 
     HttpServletResponse res = (HttpServletResponse) response;
-    res.addHeader("access-control-headers", "location");
+    res.addHeader("access-control-expose-headers", "location");
     chain.doFilter(request, response);
 
   }
