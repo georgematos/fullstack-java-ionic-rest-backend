@@ -81,7 +81,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     config.setAllowCredentials(true);
     // Don't do this in production, use a proper list of allowed origins
     // TODO trocar o endereço pelo do servidor de produção
-    config.setAllowedOrigins(Collections.singletonList("http://localhost:8001"));
+    config.setAllowedOrigins(Collections.singletonList("*"));
+    // config.setAllowedOrigins(Collections.singletonList("http://localhost:8100"));
     config.setAllowedHeaders(Arrays.asList("*")); //"Origin", "Content-Type", "Accept"
     config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "OPTIONS", "DELETE", "PATCH"));
     source.registerCorsConfiguration("/**", config);
